@@ -46,7 +46,7 @@ window.onload = function() {
 		}
 	}
 
-	setInterval(gameLoop, 100);
+	setInterval(gameLoop, 75);
 }
 
 function initGame() {
@@ -83,10 +83,10 @@ function gameLoop() {
 			x -= canvas.offsetLeft;
 			y -= canvas.offsetTop;
 			y += Math.round(window.scrollY);
-			alert("x:" + x + " y:" + y);
 			ctx.rect(475, 230, 250, 100);
 			if(x > 475 && x < 475 + 250 && y > 230 && y < 230 + 100){
 				gameState = 1;
+				initGame();
 			}
 		}
 	}
@@ -111,7 +111,7 @@ function gameLoop() {
 			// If we collide with our tail, GAME OVER
 			if(i != 0 && snakeBlocks[0].x == snakeBlocks[i].x && snakeBlocks[0].y == snakeBlocks[i].y) {
 				// GAME OVER
-				initGame();
+				gameState = 2;
 				return;
 			}
 
@@ -119,7 +119,7 @@ function gameLoop() {
 			for(var j = 0; j < solidBlocks.length; j++) {
 				if(snakeBlocks[i].x === solidBlocks[j].x && snakeBlocks[i].y === solidBlocks[j].y) {
 					// GAME OVER
-					initGame()
+					gameState = 2;
 					return;
 				}
 			}
@@ -164,17 +164,17 @@ function gameLoop() {
 			x -= canvas.offsetLeft;
 			y -= canvas.offsetTop;
 			y += Math.round(window.scrollY);
-			alert("x:" + x + " y:" + y);
 			ctx.rect(475, 230, 250, 100);
 			if(x > 475 && x < 475 + 250 && y > 230 && y < 230 + 100){
 				gameState = 1;
+				initGame();
 			}
 		}
 	}
 
 	// Game over if we hit the edges of the canvas
 	if(snakeBlocks[0].x < 0 || snakeBlocks[0].x >= canvas.width || snakeBlocks[0].y < 0 || snakeBlocks[0].y >= canvas.height) {
-		initGame();
+		gameState = 2;
 		return;
 	}
 
