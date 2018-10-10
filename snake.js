@@ -4,7 +4,8 @@ NUM_SOLID_BLOCKS = 3;
 
 // Game items
 snakeBlocks = [];
-changes = [];
+dx = 1;
+dy = 0;
 solidBlocks = [];
 pellet = {};
 
@@ -28,19 +29,23 @@ window.onload = function() {
 	window.onkeydown = function(e) {
 		switch(e.keyCode) {
 			case 37: // LEFT
-				if(snakeBlocks[0].dx != 1) changes.push({x: snakeBlocks[0].x, y: snakeBlocks[0].y, dx: -1, dy: 0});
+				if(dx != 1) dx = -1;
+				dy = 0;
 				e.preventDefault();
 				break;
 			case 38: // UP
-				if(snakeBlocks[0].dy != 1)changes.push({x: snakeBlocks[0].x, y: snakeBlocks[0].y, dx: 0, dy: -1});
+				if(dy != 1) dy = -1;
+				dx = 0;
 				e.preventDefault();
 				break;
 			case 39: // RIGHT
-				if(snakeBlocks[0].dx != -1) changes.push({x: snakeBlocks[0].x, y: snakeBlocks[0].y, dx: 1, dy: 0});
+				if(dx != -1) dx = 1;
+				dy = 0;
 				e.preventDefault();
 				break;
 			case 40: // DOWN
-				if(snakeBlocks[0].dy != -1) changes.push({x: snakeBlocks[0].x, y: snakeBlocks[0].y, dx: 0, dy: 1});
+				if(dy != -1) dy = 1;
+				dx = 0;
 				e.preventDefault();
 				break;
 		}
@@ -52,7 +57,7 @@ window.onload = function() {
 function initGame() {
 	update_scores();
 	snakeBlocks = [];
-	snakeBlocks.push({x: 200, y: 200, dx: 1, dy: 0});
+	snakeBlocks.push({x: 200, y: 200});
 
 	randomizePellet();
 
@@ -95,36 +100,34 @@ function gameLoop() {
 		clear();
 		draw();
 
-		for(var i = 0; i < snakeBlocks.length; i++) {
-			// change the tail direction at the correct point
-			for(var j = 0; j < changes.length; j++) {
-				if(snakeBlocks[i].x === changes[j].x && snakeBlocks[i].y === changes[j].y) {
-					snakeBlocks[i].dx = changes[j].dx;
-					snakeBlocks[i].dy = changes[j].dy;
-
-					// Remove from the changes after all the blocks have gone through it
-					if(i === snakeBlocks.length - 1) changes.shift();
-				}
-			}
-
-			snakeBlocks[i].x += snakeBlocks[i].dx * SNAKE_BLOCK_SIZE;
-			snakeBlocks[i].y += snakeBlocks[i].dy * SNAKE_BLOCK_SIZE;
-
+		for(var i = snakeBlocks.length - 1; i >= 0; i--) {
 			// If we collide with our tail, GAME OVER
-			if(i != 0 && snakeBlocks[0].x == snakeBlocks[i].x && snakeBlocks[0].y == snakeBlocks[i].y) {
+			if(i != 0 && snakeBlocks[0].x === snakeBlocks[i].x && snakeBlocks[0].y === snakeBlocks[i].y) {
 				// GAME OVER
 				gameState = 2;
 				return;
 			}
 
-			// Check for collision with solid blocks
-			for(var j = 0; j < solidBlocks.length; j++) {
-				if(snakeBlocks[i].x === solidBlocks[j].x && snakeBlocks[i].y === solidBlocks[j].y) {
-					// GAME OVER
-					gameState = 2;
-					return;
+			if(i != 0) {
+				snakeBlocks[i].x = snakeBlocks[i - 1].x;
+				snakeBlocks[i].y = snakeBlocks[i - 1].y;
+			} else {
+				if(dy === 0) {
+					snakeBlocks[i].x += dx * SNAKE_BLOCK_SIZE;
+				}
+				else if (dx === 0) {
+					snakeBlocks[i].y += dy * SNAKE_BLOCK_SIZE;
 				}
 			}
+
+			// // Check for collision with solid blocks
+			// for(var j = 0; j < solidBlocks.length; j++) {
+			// 	if(snakeBlocks[i].x === solidBlocks[j].x && snakeBlocks[i].y === solidBlocks[j].y) {
+			// 		// GAME OVER
+			// 		gameState = 2;
+			// 		return;
+			// 	}
+			// }
 		}
 
 		// Game over if we hit the edges of the canvas
@@ -135,7 +138,7 @@ function gameLoop() {
 
 		// Check collision with pellet
 		if(snakeBlocks[0].x === pellet.x && snakeBlocks[0].y === pellet.y) {
-			appendBlocks(3);
+			appendBlocks(1);
 			randomizeSolidBlocks(solidBlocks.length + 1);
 			randomizePellet();
 		}
@@ -214,14 +217,7 @@ function draw() {
 
 function appendBlocks(numBlocks) {
 	for(var i = 0; i < numBlocks; i++) {
-		var lastBlock = snakeBlocks[snakeBlocks.length - 1];
-
-		snakeBlocks.push({
-			x: lastBlock.x - lastBlock.dx * SNAKE_BLOCK_SIZE,
-			y: lastBlock.y - lastBlock.dy * SNAKE_BLOCK_SIZE,
-			dx: lastBlock.dx,
-			dy: lastBlock.dy
-		});
+		snakeBlocks.push({x: snakeBlocks[0].x + SNAKE_BLOCK_SIZE * dx, y: snakeBlocks[0].y + SNAKE_BLOCK_SIZE * dy});
 	}
 }
 
