@@ -4,45 +4,52 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="snake.css" />
-    <script type="text/javascript" src="snake.js"></script>
+    <link rel="icon" href="snake.png">
     <title>CSM Game</title>
   </head>
   <body>
     <header class="home_page">
-      <h1 class="center">Welcome to SnakeBloks</h1>
-      <p class="center">This game is similar to the tradition Snake game with additional features</p>
+      <h1 class="center">Welcome to SnakeBlocks</h1>
+      <p class="center">Randomly generated blocks in yellow will try to kill you</p>
+      <div id="blc1"></div>
+      <div id="blc2"></div>
+      <div id="blc3"></div>
+      <div id="blc4"></div>
     </header>
-    <section class="center game">
-      <h2>Play SnakeBloks</h2>
-      <p>Use the keyboard to control the snake and the mouse to navigate through the options</p>
-      <canvas id="canvas" width="1200" height="500" style="border:1px solid #fff;"></canvas>
-    </section>
-    <!-- <section class="content">
-      <article class="left center">
-        <h2>Play SnakeBloks</h2>
+    <section class="main_section">
+      <article class="center game">
+        <h2>Play SnakeBlocks</h2>
         <p>Use the keyboard to control the snake and the mouse to navigate through the options</p>
-        <canvas id="myCanvas" width="500" height="500" style="border:1px solid #000000;"></canvas>
+        <br>
+        <canvas id="canvas" width="1200" height="500"></canvas>
       </article>
-      <article class="right center">
-        <h2>Top 10 Highscores</h2>
-        <div>
-          <p>1. 4500</p>
-          <p>2. 4500</p>
-          <p>3. 4500</p>
-          <p>4. 4500</p>
-          <p>5. 4500</p>
-          <p>6. 4500</p>
-          <p>7. 4500</p>
-          <p>8. 4500</p>
-          <p>9. 4500</p>
-          <p>10. 4500</p>
+      <article class="center highscore">
+        <h2 id="highscore">Alltime Highscore List</h2>
+        <div class="container">
+          <div class="left">
+            <p>1. PeterGrif: 4500</p>
+            <p>2. PeterGrif: 4500</p>
+            <p>3. PeterGrif: 4500</p>
+            <p>4. PeterGrif: 4500</p>
+            <p>5. PeterGrif: 4500</p>
+          </div>
+          <div class="right">
+            <p>6. PeterGrif: 4500</p>
+            <p>7. PeterGrif: 4500</p>
+            <p>8. PeterGrif: 4500</p>
+            <p>9. PeterGrif: 4500</p>
+            <p>10. PeterGrif: 4500</p>
+          </div>
         </div>
       </article>
-    </section> -->
+      <br>
+      <br>
+    </section>
     <footer class="center">
       Snake Game 2018 for CSCI 445 <br>
       Contributers: Luke Pierce, Alex Degroat, and Michael Niemeyer <br>
       Copyright 2018
     </footer>
+    <script type="text/javascript" src="snake.js"></script>
   </body>
 </html>
