@@ -28,19 +28,19 @@ window.onload = function() {
 	window.onkeydown = function(e) {
 		switch(e.keyCode) {
 			case 37: // LEFT
-				changes.push({x: snakeBlocks[0].x, y: snakeBlocks[0].y, dx: -1, dy: 0});
+				if(snakeBlocks[0].dx != 1) changes.push({x: snakeBlocks[0].x, y: snakeBlocks[0].y, dx: -1, dy: 0});
 				e.preventDefault();
 				break;
 			case 38: // UP
-				changes.push({x: snakeBlocks[0].x, y: snakeBlocks[0].y, dx: 0, dy: -1});
+				if(snakeBlocks[0].dy != 1)changes.push({x: snakeBlocks[0].x, y: snakeBlocks[0].y, dx: 0, dy: -1});
 				e.preventDefault();
 				break;
 			case 39: // RIGHT
-				changes.push({x: snakeBlocks[0].x, y: snakeBlocks[0].y, dx: 1, dy: 0});
+				if(snakeBlocks[0].dx != -1) changes.push({x: snakeBlocks[0].x, y: snakeBlocks[0].y, dx: 1, dy: 0});
 				e.preventDefault();
 				break;
 			case 40: // DOWN
-				changes.push({x: snakeBlocks[0].x, y: snakeBlocks[0].y, dx: 0, dy: 1});
+				if(snakeBlocks[0].dy != -1) changes.push({x: snakeBlocks[0].x, y: snakeBlocks[0].y, dx: 0, dy: 1});
 				e.preventDefault();
 				break;
 		}
@@ -91,9 +91,10 @@ function gameLoop() {
 			}
 		}
 	}
-	else if(gameState == 1){
+	else if(gameState == 1 ) {
 		clear();
 		draw();
+
 		for(var i = 0; i < snakeBlocks.length; i++) {
 			// change the tail direction at the correct point
 			for(var j = 0; j < changes.length; j++) {
@@ -134,7 +135,7 @@ function gameLoop() {
 
 		// Check collision with pellet
 		if(snakeBlocks[0].x === pellet.x && snakeBlocks[0].y === pellet.y) {
-			appendBlock();
+			appendBlocks(3);
 			randomizeSolidBlocks(solidBlocks.length + 1);
 			randomizePellet();
 		}
@@ -159,7 +160,7 @@ function gameLoop() {
 		ctx.fillStyle = "#00ff00";
 		ctx.textAlign = "left";
 		ctx.fillText(status, 20, 430);
-		ctx.fillText("Score: 4000", 20, 480);
+		ctx.fillText("Score: " + snakeBlocks.length, 20, 480);
 
 		ctx.font = "40px Courier New";
 		ctx.fillStyle = "#f00";
@@ -211,15 +212,17 @@ function draw() {
 	}
 }
 
-function appendBlock() {
-	var lastBlock = snakeBlocks[snakeBlocks.length - 1];
+function appendBlocks(numBlocks) {
+	for(var i = 0; i < numBlocks; i++) {
+		var lastBlock = snakeBlocks[snakeBlocks.length - 1];
 
-	snakeBlocks.push({
-		x: lastBlock.x - lastBlock.dx * SNAKE_BLOCK_SIZE,
-		y: lastBlock.y - lastBlock.dy * SNAKE_BLOCK_SIZE,
-		dx: lastBlock.dx,
-		dy: lastBlock.dy
-	});
+		snakeBlocks.push({
+			x: lastBlock.x - lastBlock.dx * SNAKE_BLOCK_SIZE,
+			y: lastBlock.y - lastBlock.dy * SNAKE_BLOCK_SIZE,
+			dx: lastBlock.dx,
+			dy: lastBlock.dy
+		});
+	}
 }
 
 function randomBoardPos(max) {
