@@ -164,6 +164,8 @@ function gameLoop() {
 		ctx.textAlign = "left";
 		ctx.fillText(status, 20, 430);
 		ctx.fillText("Score: " + snakeBlocks.length, 20, 480);
+		
+		highscore(snakeBlocks.length);
 
 		ctx.font = "40px Courier New";
 		ctx.fillStyle = "#f00";
@@ -176,8 +178,6 @@ function gameLoop() {
 		ctx.rect(475, 230, 250, 100);
 		ctx.stroke();
 
-		// ['name'=>'First Last', 'score'=>100]
-		// highscore(score) Update the score for the api
 
 		window.onmousedown = function(e){
 			var x = event.x;
