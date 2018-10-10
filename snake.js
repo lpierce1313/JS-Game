@@ -50,6 +50,7 @@ window.onload = function() {
 }
 
 function initGame() {
+	update_scores();
 	snakeBlocks = [];
 	snakeBlocks.push({x: 200, y: 200, dx: 1, dy: 0});
 
@@ -157,6 +158,9 @@ function gameLoop() {
 		ctx.strokeStyle="white";
 		ctx.rect(475, 230, 250, 100);
 		ctx.stroke();
+
+		// ['name'=>'First Last', 'score'=>100]
+		// highscore(score) Update the score for the api
 
 		window.onmousedown = function(e){
 			var x = event.x;

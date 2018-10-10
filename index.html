@@ -4,6 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="snake.css" />
+    <link rel="stylesheet" href="highscore.css">
+    <script type="text/javascript" src="HighscoreAPI.js"></script>
+    <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="snake.js"></script>
     <link rel="icon" href="snake.png">
     <title>CSM Game</title>
   </head>
@@ -25,7 +29,7 @@
       </article>
       <article class="center highscore">
         <h2 id="highscore">Alltime Highscore List</h2>
-        <div class="container">
+        <!-- <div class="container">
           <div class="left">
             <p>1. PeterGrif: 4500</p>
             <p>2. PeterGrif: 4500</p>
@@ -40,7 +44,23 @@
             <p>9. PeterGrif: 4500</p>
             <p>10. PeterGrif: 4500</p>
           </div>
-        </div>
+        </div> -->
+        <div id="highdiv">
+    			<table id="hightable">
+    				<tr>
+    					<th>User</th>
+    					<th>Score</th>
+    				</tr>
+    			</table>
+    			<table id="myhightable">
+    				<tr>
+    					<th colspan="2">Your High Score</th>
+    				</tr>
+    				<tr id="myhighscore">
+    					<td colspan="2">You don't have one yet!</td>
+    				</tr>
+    			</table>
+    		</div>
       </article>
       <br>
       <br>
@@ -50,6 +70,5 @@
       Contributers: Luke Pierce, Alex Degroat, and Michael Niemeyer <br>
       Copyright 2018
     </footer>
-    <script type="text/javascript" src="snake.js"></script>
   </body>
 </html>
