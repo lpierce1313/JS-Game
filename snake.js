@@ -124,6 +124,19 @@ function gameLoop() {
 				}
 			}
 		}
+
+		// Game over if we hit the edges of the canvas
+		if(snakeBlocks[0].x < 0 || snakeBlocks[0].x >= canvas.width || snakeBlocks[0].y < 0 || snakeBlocks[0].y >= canvas.height) {
+			gameState = 2;
+			return;
+		}
+
+		// Check collision with pellet
+		if(snakeBlocks[0].x === pellet.x && snakeBlocks[0].y === pellet.y) {
+			appendBlock();
+			randomizeSolidBlocks(solidBlocks.length + 1);
+			randomizePellet();
+		}
 	}
 	else{
 		clear();
@@ -170,19 +183,6 @@ function gameLoop() {
 				initGame();
 			}
 		}
-	}
-
-	// Game over if we hit the edges of the canvas
-	if(snakeBlocks[0].x < 0 || snakeBlocks[0].x >= canvas.width || snakeBlocks[0].y < 0 || snakeBlocks[0].y >= canvas.height) {
-		gameState = 2;
-		return;
-	}
-
-	// Check collision with pellet
-	if(snakeBlocks[0].x === pellet.x && snakeBlocks[0].y === pellet.y) {
-		appendBlock();
-		randomizeSolidBlocks(solidBlocks.length + 1);
-		randomizePellet();
 	}
 }
 
