@@ -165,7 +165,7 @@ function gameLoop() {
 		ctx.fillText(status, 20, 430);
 		ctx.fillText("Score: " + snakeBlocks.length, 20, 480);
 		
-		highscore(snakeBlocks.length);
+		// highscore(snakeBlocks.length);
 
 		ctx.font = "40px Courier New";
 		ctx.fillStyle = "#f00";
