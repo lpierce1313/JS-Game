@@ -124,13 +124,13 @@ function gameLoop() {
 		}
 
 		// Check for collision with solid blocks with head of snake.
-		/*for(var j = 0; j < solidBlocks.length; j++) {
+		for(var j = 0; j < solidBlocks.length; j++) {
 			if(snakeBlocks[0].x === solidBlocks[j].x && snakeBlocks[0].y === solidBlocks[j].y) {
 		 		// GAME OVER
 		 		gameState = 2;
 		 		return;
 		 	}
-		}*/
+		}
 
 		// Game over if we hit the edges of the canvas
 		if(snakeBlocks[0].x < 0 || snakeBlocks[0].x >= canvas.width || snakeBlocks[0].y < 0 || snakeBlocks[0].y >= canvas.height) {
