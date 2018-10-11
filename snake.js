@@ -120,15 +120,17 @@ function gameLoop() {
 				}
 			}
 
-			// // Check for collision with solid blocks
-			// for(var j = 0; j < solidBlocks.length; j++) {
-			// 	if(snakeBlocks[i].x === solidBlocks[j].x && snakeBlocks[i].y === solidBlocks[j].y) {
-			// 		// GAME OVER
-			// 		gameState = 2;
-			// 		return;
-			// 	}
-			// }
+
 		}
+
+		// Check for collision with solid blocks with head of snake.
+		/*for(var j = 0; j < solidBlocks.length; j++) {
+			if(snakeBlocks[0].x === solidBlocks[j].x && snakeBlocks[0].y === solidBlocks[j].y) {
+		 		// GAME OVER
+		 		gameState = 2;
+		 		return;
+		 	}
+		}*/
 
 		// Game over if we hit the edges of the canvas
 		if(snakeBlocks[0].x < 0 || snakeBlocks[0].x >= canvas.width || snakeBlocks[0].y < 0 || snakeBlocks[0].y >= canvas.height) {
@@ -139,8 +141,9 @@ function gameLoop() {
 		// Check collision with pellet
 		if(snakeBlocks[0].x === pellet.x && snakeBlocks[0].y === pellet.y) {
 			appendBlocks(1);
-			randomizeSolidBlocks(solidBlocks.length + 1);
 			randomizePellet();
+			randomizeSolidBlocks(solidBlocks.length + 1);
+
 		}
 	}
 	else{
@@ -164,7 +167,7 @@ function gameLoop() {
 		ctx.textAlign = "left";
 		ctx.fillText(status, 20, 430);
 		ctx.fillText("Score: " + snakeBlocks.length, 20, 480);
-		
+
 		// highscore(snakeBlocks.length);
 
 		ctx.font = "40px Courier New";
@@ -229,7 +232,15 @@ function randomizeSolidBlocks(numBlocks) {
 	if(numBlocks > 10) numBlocks = 10;
 	solidBlocks = [];
 	for(var i = 0; i < numBlocks; i++) {
-		solidBlocks.push({x: randomBoardPos(canvas.width), y: randomBoardPos(canvas.height)});
+		x = randomBoardPos(canvas.width);
+		y = randomBoardPos(canvas.height);
+		//Prevent the block from being in the same position as the pellet
+		//Prevent blocks from being in the same line of the direction traveling
+		if((pellet.x === x && pellet.y === y) ||  x === snakeBlocks[0].x || y === snakeBlocks[0].y){
+			i--;
+			continue;
+		}
+		solidBlocks.push({x: x, y: y});
 	}
 }
 
