@@ -4,8 +4,6 @@ NUM_SOLID_BLOCKS = 3;
 
 // Game items
 snakeBlocks = [];
-dx = 1;
-dy = 0;
 solidBlocks = [];
 pellet = {};
 
@@ -23,8 +21,6 @@ y = 0;
 window.onload = function() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
-
-	initGame();
 
 	window.onkeydown = function(e) {
 		switch(e.keyCode) {
@@ -55,10 +51,14 @@ window.onload = function() {
 }
 
 function initGame() {
+	dx = 1;
+	dy = 0;
+	
 	update_scores();
+	
 	snakeBlocks = [];
-	snakeBlocks.push({x: 200, y: 200});
-
+	snakeBlocks.push({x: 200, y: 200});	
+	
 	randomizePellet();
 
 	randomizeSolidBlocks(3);
@@ -83,7 +83,7 @@ function gameLoop() {
 		ctx.rect(475, 230, 250, 100);
 		ctx.stroke();
 
-		window.onmousedown = function(e){
+		window.onmousedown = function(e) {
 			var x = event.x;
 			var y = event.y;
 			x -= canvas.offsetLeft;
@@ -96,7 +96,7 @@ function gameLoop() {
 			}
 		}
 	}
-	else if(gameState == 1 ) {
+	else if(gameState == 1) {
 		clear();
 		draw();
 
