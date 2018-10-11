@@ -3,6 +3,8 @@ SNAKE_BLOCK_SIZE = 20;
 NUM_SOLID_BLOCKS = 3;
 
 // Game items
+dx = 1;
+dy = 0;
 snakeBlocks = [];
 solidBlocks = [];
 pellet = {};
