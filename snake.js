@@ -23,6 +23,7 @@ y = 0;
 window.onload = function() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
+	update_scores();
 
 	window.onkeydown = function(e) {
 		switch(e.keyCode) {
@@ -55,12 +56,12 @@ window.onload = function() {
 function initGame() {
 	dx = 1;
 	dy = 0;
-	
-	update_scores();
-	
+
+	// update_scores();
+
 	snakeBlocks = [];
-	snakeBlocks.push({x: 200, y: 200});	
-	
+	snakeBlocks.push({x: 200, y: 200});
+
 	randomizePellet();
 
 	randomizeSolidBlocks(3);
@@ -93,8 +94,10 @@ function gameLoop() {
 			y += Math.round(window.scrollY);
 			ctx.rect(475, 230, 250, 100);
 			if(x > 475 && x < 475 + 250 && y > 230 && y < 230 + 100){
-				gameState = 1;
-				initGame();
+				if(gameState == 0){
+					gameState = 1;
+					initGame();
+				}
 			}
 		}
 	}
@@ -192,8 +195,10 @@ function gameLoop() {
 			y += Math.round(window.scrollY);
 			ctx.rect(475, 230, 250, 100);
 			if(x > 475 && x < 475 + 250 && y > 230 && y < 230 + 100){
-				gameState = 1;
-				initGame();
+				if(gameState == 2){
+					gameState = 1;
+					initGame();
+				}
 			}
 		}
 	}

@@ -1,23 +1,23 @@
 =====================================================================
-  _    _ _       _                                       _____ _____ 
+  _    _ _       _                                       _____ _____
  | |  | (_)     | |                                /\   |  __ \_   _|
- | |__| |_  __ _| |__  ___  ___ ___  _ __ ___     /  \  | |__) || |  
- |  __  | |/ _` | '_ \/ __|/ __/ _ \| '__/ _ \   / /\ \ |  ___/ | |  
- | |  | | | (_| | | | \__ \ (_| (_) | | |  __/  / ____ \| |    _| |_ 
+ | |__| |_  __ _| |__  ___  ___ ___  _ __ ___     /  \  | |__) || |
+ |  __  | |/ _` | '_ \/ __|/ __/ _ \| '__/ _ \   / /\ \ |  ___/ | |
+ | |  | | | (_| | | | \__ \ (_| (_) | | |  __/  / ____ \| |    _| |_
  |_|  |_|_|\__, |_| |_|___/\___\___/|_|  \___| /_/    \_\_|   |_____|
-            __/ |                                                    
-           |___/                                                     
+            __/ |
+           |___/
 =====================================================================
 
 ========================================================
-   _____ _                   _          _    _          
-  / ____| |                 | |        | |  | |         
- | (___ | |_ ___ _ __  ___  | |_ ___   | |  | |___  ___ 
+   _____ _                   _          _    _
+  / ____| |                 | |        | |  | |
+ | (___ | |_ ___ _ __  ___  | |_ ___   | |  | |___  ___
   \___ \| __/ _ \ '_ \/ __| | __/ _ \  | |  | / __|/ _ \
   ____) | ||  __/ |_) \__ \ | || (_) | | |__| \__ \  __/
  |_____/ \__\___| .__/|___/  \__\___/   \____/|___/\___|
-                | |                                     
-                |_|                                     
+                | |
+                |_|
 ========================================================
 
 Step 0: Make sure you have an HTML and Javascript game and that you are including JQuery.
@@ -34,7 +34,6 @@ Step 2: Insert the following HTML into index.HTML to display the highscore table
 					<th>User</th>
 					<th>Score</th>
 				</tr>
-
 			</table>
 			<table id="myhightable">
 				<tr>
@@ -74,18 +73,18 @@ Step 8: zip your game folder. The max size that can be uploaded is 10MB. For you
 		2. (Optional) An image named thumbnail that is a png, jpg, bmp, gif. A default image will be displayed if this is not present.
 
 	WARNING: If you are on windows, you must follow one of these two options If you do not follow these steps for zipping your game on windows, you will receive an error message:
-		
+
 		1. (Recommended) Use 7-zip to zip your folder
 		2. Put your game folder inside of another folder, and zip the outer folder by right clicking on it and selecting compress
 
-		 
 
-		 
+
+
 ===================
-     _    ____ ___ 
+     _    ____ ___
     / \  |  _ \_ _|
-   / _ \ | |_) | | 
-  / ___ \|  __/| | 
+   / _ \ | |_) | |
+  / ___ \|  __/| |
  /_/   \_\_|  |___|
 ===================
 
@@ -116,8 +115,7 @@ SUBMIT A SCORE:
 
 	Return:
 		1)	Score saved successfully => "success"
-		
+
 		2)	Competition is in the past, future, or inactive => "competition-inactive
 
 =============================================================================================
-
