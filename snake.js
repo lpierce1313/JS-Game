@@ -1,6 +1,5 @@
 // Constants
 SNAKE_BLOCK_SIZE = 20;
-NUM_SOLID_BLOCKS = 3;
 
 // Game items
 dx = 1;
@@ -14,16 +13,16 @@ canvas = null;
 ctx = null;
 
 //Game stats
-gameState = 0;
 score = 0;
 failed = 1;
 x = 0;
 y = 0;
 
+gameLoopInterval = null;
+
 window.onload = function() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
-	update_scores();
 
 	window.onkeydown = function(e) {
 		switch(e.keyCode) {
@@ -50,14 +49,16 @@ window.onload = function() {
 		}
 	}
 
-	setInterval(gameLoop, 75);
+	mainMenu();
 }
 
 function initGame() {
 	dx = 1;
 	dy = 0;
 
-	// update_scores();
+	gameLoopInterval = setInterval(gameLoop, 75);
+	update_scores();
+
 
 	snakeBlocks = [];
 	snakeBlocks.push({x: 200, y: 200});
@@ -68,139 +69,54 @@ function initGame() {
 }
 
 function gameLoop() {
-	if(gameState == 0){
-		clear();
-		ctx.font = "80px Courier New";
-		ctx.fillStyle = "#00ff00";
-		ctx.textAlign = "center";
-		ctx.fillText("SnakeBlocks", canvas.width/2, 150);
+	clear();
+	draw();
 
-		ctx.font = "40px Courier New";
-		ctx.fillStyle = "#f00";
-		ctx.textAlign = "center";
-		ctx.fillText("Play Game", canvas.width/2, 290);
-
-		ctx.beginPath();
-		ctx.lineWidth="3";
-		ctx.strokeStyle="white";
-		ctx.rect(475, 230, 250, 100);
-		ctx.stroke();
-
-		window.onmousedown = function(e) {
-			var x = event.x;
-			var y = event.y;
-			x -= canvas.offsetLeft;
-			y -= canvas.offsetTop;
-			y += Math.round(window.scrollY);
-			ctx.rect(475, 230, 250, 100);
-			if(x > 475 && x < 475 + 250 && y > 230 && y < 230 + 100){
-				if(gameState == 0){
-					gameState = 1;
-					initGame();
-				}
-			}
-		}
-	}
-	else if(gameState == 1) {
-		clear();
-		draw();
-
-		for(var i = snakeBlocks.length - 1; i >= 0; i--) {
-			// If we collide with our tail, GAME OVER
-			if(i != 0 && snakeBlocks[0].x === snakeBlocks[i].x && snakeBlocks[0].y === snakeBlocks[i].y) {
-				// GAME OVER
-				gameState = 2;
-				return;
-			}
-
-			if(i != 0) {
-				snakeBlocks[i].x = snakeBlocks[i - 1].x;
-				snakeBlocks[i].y = snakeBlocks[i - 1].y;
-			} else {
-				if(dy === 0) {
-					snakeBlocks[i].x += dx * SNAKE_BLOCK_SIZE;
-				}
-				else if (dx === 0) {
-					snakeBlocks[i].y += dy * SNAKE_BLOCK_SIZE;
-				}
-			}
-
-
-		}
-
-		// Check for collision with solid blocks with head of snake.
-		for(var j = 0; j < solidBlocks.length; j++) {
-			if(snakeBlocks[0].x === solidBlocks[j].x && snakeBlocks[0].y === solidBlocks[j].y) {
-		 		// GAME OVER
-		 		gameState = 2;
-		 		return;
-		 	}
-		}
-
-		// Game over if we hit the edges of the canvas
-		if(snakeBlocks[0].x < 0 || snakeBlocks[0].x >= canvas.width || snakeBlocks[0].y < 0 || snakeBlocks[0].y >= canvas.height) {
-			gameState = 2;
+	for(var i = snakeBlocks.length - 1; i >= 0; i--) {
+		// If we collide with our tail, GAME OVER
+		if(i != 0 && snakeBlocks[0].x === snakeBlocks[i].x && snakeBlocks[0].y === snakeBlocks[i].y) {
+			// GAME OVER
+			gameOver();
 			return;
 		}
 
-		// Check collision with pellet
-		if(snakeBlocks[0].x === pellet.x && snakeBlocks[0].y === pellet.y) {
-			appendBlocks(1);
-			randomizePellet();
-			randomizeSolidBlocks(solidBlocks.length + 1);
-
-		}
-	}
-	else{
-		clear();
-		if(failed == 1){
-			var replay = "Try Again";
-			var status = "You Suck!"
-		}
-		else{
-			var replay = "Play Again";
-			var status = "You Did Great!"
-		}
-
-		ctx.font = "80px Courier New";
-		ctx.fillStyle = "#00ff00";
-		ctx.textAlign = "center";
-		ctx.fillText("Game Over", canvas.width/2, 150);
-
-		ctx.font = "32px Courier New";
-		ctx.fillStyle = "#00ff00";
-		ctx.textAlign = "left";
-		ctx.fillText(status, 20, 430);
-		ctx.fillText("Score: " + snakeBlocks.length, 20, 480);
-
-		// highscore(snakeBlocks.length);
-
-		ctx.font = "40px Courier New";
-		ctx.fillStyle = "#f00";
-		ctx.textAlign = "center";
-		ctx.fillText(replay, canvas.width/2, 290);
-
-		ctx.beginPath();
-		ctx.lineWidth="3";
-		ctx.strokeStyle="white";
-		ctx.rect(475, 230, 250, 100);
-		ctx.stroke();
-
-
-		window.onmousedown = function(e){
-			var x = event.x;
-			var y = event.y;
-			x -= canvas.offsetLeft;
-			y -= canvas.offsetTop;
-			y += Math.round(window.scrollY);
-			ctx.rect(475, 230, 250, 100);
-			if(x > 475 && x < 475 + 250 && y > 230 && y < 230 + 100){
-				if(gameState == 2){
-					gameState = 1;
-					initGame();
-				}
+		if(i != 0) {
+			snakeBlocks[i].x = snakeBlocks[i - 1].x;
+			snakeBlocks[i].y = snakeBlocks[i - 1].y;
+		} else {
+			if(dy === 0) {
+				snakeBlocks[i].x += dx * SNAKE_BLOCK_SIZE;
+			}
+			else if (dx === 0) {
+				snakeBlocks[i].y += dy * SNAKE_BLOCK_SIZE;
 			}
 		}
+
+
+	}
+
+	// Check for collision with solid blocks with head of snake.
+	for(var j = 0; j < solidBlocks.length; j++) {
+		if(snakeBlocks[0].x === solidBlocks[j].x && snakeBlocks[0].y === solidBlocks[j].y) {
+	 		// GAME OVER
+	 		gameOver();
+	 		return;
+	 	}
+	}
+
+	// Game over if we hit the edges of the canvas
+	if(snakeBlocks[0].x < 0 || snakeBlocks[0].x >= canvas.width || snakeBlocks[0].y < 0 || snakeBlocks[0].y >= canvas.height) {
+		gameOver();
+		gameOverPromise.
+		return;
+	}
+
+	// Check collision with pellet
+	if(snakeBlocks[0].x === pellet.x && snakeBlocks[0].y === pellet.y) {
+		appendBlocks(1);
+		randomizePellet();
+		randomizeSolidBlocks(solidBlocks.length + 1);
+
 	}
 }
 
@@ -258,4 +174,90 @@ function randomizePellet() {
 function clear(){
 	ctx.fillStyle = "#000";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function mainMenu() {
+	//clearInterval(gameLoopInterval);
+
+	clear();
+	ctx.font = "80px Courier New";
+	ctx.fillStyle = "#00ff00";
+	ctx.textAlign = "center";
+	ctx.fillText("SnakeBlocks", canvas.width/2, 150);
+
+	ctx.font = "40px Courier New";
+	ctx.fillStyle = "#f00";
+	ctx.textAlign = "center";
+	ctx.fillText("Play Game", canvas.width/2, 290);
+
+	ctx.beginPath();
+	ctx.lineWidth="3";
+	ctx.strokeStyle="white";
+	ctx.rect(475, 230, 250, 100);
+	ctx.stroke();
+
+	window.onmousedown = function(e) {
+		var x = event.x;
+		var y = event.y;
+		x -= canvas.offsetLeft;
+		y -= canvas.offsetTop;
+		y += Math.round(window.scrollY);
+		ctx.rect(475, 230, 250, 100);
+		if(x > 475 && x < 475 + 250 && y > 230 && y < 230 + 100){
+			initGame();
+		}
+	}
+}
+
+function gameOver() {
+	clearInterval(gameLoopInterval);
+
+	clear();
+
+	if(failed == 1){
+		var replay = "Try Again";
+		var status = "You Suck!"
+	}
+	else{
+		var replay = "Play Again";
+		var status = "You Did Great!"
+	}
+
+	ctx.font = "80px Courier New";
+	ctx.fillStyle = "#00ff00";
+	ctx.textAlign = "center";
+	ctx.fillText("Game Over", canvas.width/2, 150);
+
+	ctx.font = "32px Courier New";
+	ctx.fillStyle = "#00ff00";
+	ctx.textAlign = "left";
+	ctx.fillText(status, 20, 430);
+	ctx.fillText("Score: " + snakeBlocks.length, 20, 480);
+
+	ctx.font = "40px Courier New";
+	ctx.fillStyle = "#f00";
+	ctx.textAlign = "center";
+	ctx.fillText(replay, canvas.width/2, 290);
+
+	ctx.beginPath();
+	ctx.lineWidth="3";
+	ctx.strokeStyle="white";
+	ctx.rect(475, 230, 250, 100);
+	ctx.stroke();
+
+	window.onmousedown = function(e){
+		var x = event.x;
+		var y = event.y;
+		x -= canvas.offsetLeft;
+		y -= canvas.offsetTop;
+		y += Math.round(window.scrollY);
+		ctx.rect(475, 230, 250, 100);
+		if(x > 475 && x < 475 + 250 && y > 230 && y < 230 + 100){
+			initGame();
+		}
+	}
+
+	setTimeout(function() {
+		highscore(snakeBlocks.length);
+	}, 100);
 }
